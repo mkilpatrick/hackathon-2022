@@ -10,19 +10,26 @@ class entityparser {
 		// assume for now that there is only one matching entity
 		const entities = this.response.response.entities[0]
 
-		function getFieldsHelper (jsonObject, jsonPath) {
-			const paths = []
+		// ignore non-string values
+		function getFieldsHelper (jsonObject, jsonPath, mapping) {
 			for (var key in jsonObject) {
-				if (typeof jsonObject.key === "object") {
-					paths.concat(getFieldsHelper(jsonObject.key, jsonPath + "/" + key))
-				} else {
-					paths.push([jsonPath, jsonObject.key])
+				console.log(jsonObject[key], typeof jsonObject[key])
+				if (jsonObject[key] instanceof Array) {
+					console.log("is an array")
+				} else if (typeof jsonObject[key] === 'string' || jsonObject]key instanceof String) {
+					console.log("I am string")
+					mapping[jsonPath + "/" + key] = jsonObject[key]
+				} else if (jsonObject[key] instanceof Object) {
+					console.log("have to move down")
+					// paths.concat(getFieldsHelper(jsonObject.key, jsonPath + "/" + key))
 				}
 			}
-			return paths
 		}
 
-		return getFieldsHelper(entities, "")
+		const mapping = {}
+		getFieldsHelper(entities, "", mapping)
+
+		return mapping
 	}
 }
 

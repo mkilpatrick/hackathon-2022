@@ -27,7 +27,8 @@ function getActiveTab() {
  */
 const queryLiveApi = async() => {
   const { liveApiKey } =  await getStorageData("liveApiKey");
-  let url = (await getActiveTab()).url;
+  let activeTab = await getActiveTab();
+  let url = activeTab.url;
 
   const filter = encodeURIComponent(`{"websiteUrl.url": {"$eq": "${url}"}}`);
   const queryUrl = `https://liveapi.yext.com/v2/accounts/me/entities?api_key=${liveApiKey}&v=20220602&filter=${filter}`;
@@ -36,20 +37,13 @@ const queryLiveApi = async() => {
     .then(response => response.json())
     .then(data => {
       if (data?.response?.count == 1) {
-        document.getElementById("apiResponse").innerHTML = JSON.stringify(data.response.entities[0]);
-        console.log(data);
+        entityData = JSON.stringify(data.response.entities[0]);
+        document.getElementById("apiResponse").innerHTML = entityData;
+        chrome.tabs.sendMessage(activeTab.id, { entity: entityData }, function(response) {
+          console.log(response);
+        });
       } else {
         document.getElementById("apiResponse").innerHTML = "Not Live API results";
       }
   });
-
-  console.log(getSourceAsDOM(url));
-}
-
-function getSourceAsDOM(url) {
-  const xmlhttp=new XMLHttpRequest();
-  xmlhttp.open("GET",url,false);
-  xmlhttp.send();
-  parser=new DOMParser();
-  return parser.parseFromString(xmlhttp.responseText,"text/html");      
 }

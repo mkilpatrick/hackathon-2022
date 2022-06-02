@@ -35,6 +35,17 @@ const queryLiveApi = async() => {
   await fetch(queryUrl)
     .then(response => response.json())
     .then(data => {
+      document.getElementById("apiResponse").innerHTML = JSON.stringify(data.response.entities[0]);
       console.log(data);
   });
+
+  console.log(getSourceAsDOM(url));
+}
+
+function getSourceAsDOM(url) {
+  const xmlhttp=new XMLHttpRequest();
+  xmlhttp.open("GET",url,false);
+  xmlhttp.send();
+  parser=new DOMParser();
+  return parser.parseFromString(xmlhttp.responseText,"text/html");      
 }

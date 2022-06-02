@@ -2,3 +2,7 @@ body {
   width: 400px;
   height: auto;
 }
+
+#liveApiKey {
+  margin-bottom: 10px;
+}

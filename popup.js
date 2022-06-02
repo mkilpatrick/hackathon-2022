@@ -29,7 +29,7 @@ const queryLiveApi = async() => {
   const { liveApiKey } =  await getStorageData("liveApiKey");
   let url = (await getActiveTab()).url;
 
-  const filter = encodeURIComponent(`"{websiteUrl.url": {"$eq": "${url}"}}`);
+  const filter = encodeURIComponent(`{"websiteUrl.url": {"$eq": "${url}"}}`);
   const queryUrl = `https://liveapi.yext.com/v2/accounts/me/entities?api_key=${liveApiKey}&v=20220602&filter=${filter}`;
   // https://liveapi.yext.com/v2/accounts/me/entities?api_key={apikey}&v=20220602&filter={url_encoded_filter_json}
   console.log(queryUrl);

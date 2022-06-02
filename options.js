@@ -20,28 +20,37 @@ function handleButtonClick(event) {
 }
 
 // Add a button to the page for each supplied color
-function constructOptions(buttonColors) {
-  chrome.storage.sync.get("color", (data) => {
-    let currentColor = data.color;
+// function constructOptions(buttonColors) {
+//   chrome.storage.sync.get("color", (data) => {
+//     let currentColor = data.color;
 
-    // For each color we were provided…
-    for (let buttonColor of buttonColors) {
-      // …crate a button with that color…
-      let button = document.createElement("button");
-      button.dataset.color = buttonColor;
-      button.style.backgroundColor = buttonColor;
+//     // For each color we were provided…
+//     for (let buttonColor of buttonColors) {
+//       // …crate a button with that color…
+//       let button = document.createElement("button");
+//       button.dataset.color = buttonColor;
+//       button.style.backgroundColor = buttonColor;
 
-      // …mark the currently selected color…
-      if (buttonColor === currentColor) {
-        button.classList.add(selectedClassName);
-      }
+//       // …mark the currently selected color…
+//       if (buttonColor === currentColor) {
+//         button.classList.add(selectedClassName);
+//       }
 
-      // …and register a listener for when that button is clicked
-      button.addEventListener("click", handleButtonClick);
-      page.appendChild(button);
-    }
+//       // …and register a listener for when that button is clicked
+//       button.addEventListener("click", handleButtonClick);
+//       page.appendChild(button);
+//     }
+//   });
+// }
+
+function addButtonListener() {
+  const button = document.getElementById("liveApiButton");
+  button.addEventListener("click", () => {
+    const liveApiKey = document.getElementById("liveApiInput").value;
+    chrome.storage.sync.set({ liveApiKey });
   });
 }
 
 // Initialize the page by constructing the color options
-constructOptions(presetButtonColors);
+// constructOptions(presetButtonColors);
+addButtonListener();

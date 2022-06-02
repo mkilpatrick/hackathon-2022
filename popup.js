@@ -79,15 +79,19 @@ const queryLiveApi = async() => {
     .then(data => {
       if (data?.response?.count == 1) {
         entityData = JSON.stringify(data.response.entities[0]);
-        console.log(parseResponse(entityData));
-        document.getElementById("apiResponse").innerHTML = entityData;
-        chrome.tabs.sendMessage(activeTab.id, { entity: entityData }, function(response) {
-          console.log(response);
+        chrome.tabs.sendMessage(activeTab.id, { entity: entityData }, res => {
+          const parentContainer = document.getElementById("fieldsInUse");
+          parentContainer.innerHTML = 'Fields in use:';
+          if (Array.isArray(res) && res.length > 0) {
+            res.forEach(e => {
+              const fieldDiv = document.createElement('div');
+              fieldDiv.innerHTML = e.field + ': ' + e.value;
+              parentContainer.append(fieldDiv);
+            });
+          }
         });
       } else {
         document.getElementById("apiResponse").innerHTML = "Not Live API results";
       }
   });
 }
-
-

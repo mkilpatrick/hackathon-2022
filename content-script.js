@@ -1,19 +1,13 @@
-// chrome.runtime.onMessage.addListener(
-//   function(request, sender, sendResponse) {
-//     if (request.greeting === "fetchData") {
-//       sendResponse('hi');
-//     }
-//   }
-// );
-
 // // Listen for messages
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-  // If the received message has the expected format...
   if (msg.entity) {
       console.log('msg.entity', msg.entity);
-      sendResponse('res?');
+
+      //mock data for when we figure out the string matching process
+      const testData = [{
+        field: 'c_someField',
+        value: 'some random text'
+      }]
+      sendResponse(testData);
   }
 });
-
-// alert(document);
-console.log('document', document);

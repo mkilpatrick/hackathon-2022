@@ -1,24 +1,26 @@
-// Initialize butotn with users's prefered color
-let changeColor = document.getElementById("changeColor");
+let liveApiKeyDiv = document.getElementById("liveApiKey");
 
-chrome.storage.sync.get("color", ({ color }) => {
-  changeColor.style.backgroundColor = color;
+chrome.storage.sync.get("liveApiKey", ({ liveApiKey }) => {
+  liveApiKeyDiv.innerHTML = "Using liveApiKey: " + liveApiKey;
 });
 
 // When the button is clicked, inject setPageBackgroundColor into current page
-changeColor.addEventListener("click", async () => {
+liveApiKeyDiv.addEventListener("click", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    function: setPageBackgroundColor,
+    function: queryLiveApi,
   });
 });
 
-// The body of this function will be execuetd as a content script inside the
-// current page
-function setPageBackgroundColor() {
-  chrome.storage.sync.get("color", ({ color }) => {
-    document.body.style.backgroundColor = color;
+/**
+ * Queries LiveApi to get the data of an entity based on the current url.
+ */
+function queryLiveApi() {
+  chrome.storage.sync.get("liveApiKey", ({ liveApiKey }) => {
+    const path = window.location.pathname;
+
+
   });
 }

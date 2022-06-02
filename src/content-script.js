@@ -1,4 +1,6 @@
-// // Listen for messages
+const findAndReplaceDOMText = require('findAndReplaceDOMText');
+
+// Listen for messages
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   if (msg.entity) {
       console.log('msg.entity', msg.entity);
@@ -10,4 +12,9 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
       }]
       sendResponse(testData);
   }
+});
+
+findAndReplaceDOMText(document.body, {
+    find: "Daniel",
+    wrap: 'em'
 });

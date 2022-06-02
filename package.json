@@ -1,0 +1,39 @@
+{
+  "name": "hackathon-2022",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build": "npx webpack --config webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkilpatrick/hackathon-2022.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mkilpatrick/hackathon-2022/issues"
+  },
+  "homepage": "https://github.com/mkilpatrick/hackathon-2022#readme",
+  "dependencies": {
+    "findandreplacedomtext": "^0.4.6"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "esbuild": "^0.14.25",
+    "glob": "^7.2.0",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env"
+      ],
+      "@babel/preset-typescript"
+    ]
+  }
+}

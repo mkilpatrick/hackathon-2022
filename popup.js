@@ -78,8 +78,7 @@ const queryLiveApi = async() => {
     .then(response => response.json())
     .then(data => {
       if (data?.response?.count == 1) {
-        entityData = JSON.stringify(data.response.entities[0]);
-        console.log(parseResponse(data.response.entities[0]));
+        entityData = parseResponse(data.response.entities[0]);
         chrome.tabs.sendMessage(activeTab.id, { entity: entityData }, res => {
           const parentContainer = document.getElementById("fieldsInUse");
           parentContainer.innerHTML = 'Fields in use:';

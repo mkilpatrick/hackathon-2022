@@ -35,8 +35,12 @@ const queryLiveApi = async() => {
   await fetch(queryUrl)
     .then(response => response.json())
     .then(data => {
-      document.getElementById("apiResponse").innerHTML = JSON.stringify(data.response.entities[0]);
-      console.log(data);
+      if (data?.response?.count == 1) {
+        document.getElementById("apiResponse").innerHTML = JSON.stringify(data.response.entities[0]);
+        console.log(data);
+      } else {
+        document.getElementById("apiResponse").innerHTML = "Not Live API results";
+      }
   });
 
   console.log(getSourceAsDOM(url));

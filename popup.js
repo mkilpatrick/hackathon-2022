@@ -23,38 +23,44 @@ function getActiveTab() {
 }
 
 function parseResponse(response) {
-  for (var key in jsonObject) {
-    const value = jsonObject[key]
+  const mappings = {}
 
-    if (value instanceof Array) {
-      for (let i = 0; i < value.length; i++) {
-        const item = value[i]
-        if (typeof item === 'string' || item instanceof String) {
-          if (mapping.hasOwnProperty(item)) {
-            mapping[item].push((jsonPath + "." + key).substring(1))
+  // ignore non-string values
+  function getFieldsHelper (jsonObject, jsonPath, mapping) {
+    for (var key in jsonObject) {
+      const value = jsonObject[key]
+
+      if (value instanceof Array) {
+        for (let i = 0; i < value.length; i++) {
+          const item = value[i]
+          if (typeof item === 'string' || item instanceof String) {
+            if (mapping.hasOwnProperty(item)) {
+              mapping[item].push((jsonPath + "." + key).substring(1))
+            } else {
+              mapping[item] = [(jsonPath + "." + key).substring(1)]
+            }
           } else {
-            mapping[item] = [(jsonPath + "." + key).substring(1)]
+            getFieldsHelper(value, jsonPath + "." + key, mapping)
           }
-        } else {
-          getFieldsHelper(value, jsonPath + "." + key, mapping)
         }
-      }
-    } else if (typeof value === 'string' || value instanceof String) {
-      if (mapping.hasOwnProperty(value)) {
-        mapping[value].push((jsonPath + "." + key).substring(1))
-      } else {
-        mapping[value] = [(jsonPath + "." + key).substring(1)]
-      }
+      } else if (typeof value === 'string' || value instanceof String) {
+        if (mapping.hasOwnProperty(value)) {
+          mapping[value].push((jsonPath + "." + key).substring(1))
+        } else {
+          mapping[value] = [(jsonPath + "." + key).substring(1)]
+        }
 
-    } else if (value instanceof Object) {
-      getFieldsHelper(value, jsonPath + "." + key, mapping)
+      } else if (value instanceof Object) {
+        getFieldsHelper(value, jsonPath + "." + key, mapping)
+      }
     }
+
+    return mapping
   }
 
-  const mapping = {}
-  getFieldsHelper(entities, "", mapping)
+  getFieldsHelper(response, "", mappings)
 
-  return mapping
+  return mappings
 }
 
 /**

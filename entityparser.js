@@ -13,15 +13,16 @@ class entityparser {
 		// ignore non-string values
 		function getFieldsHelper (jsonObject, jsonPath, mapping) {
 			for (var key in jsonObject) {
-				console.log(jsonObject[key], typeof jsonObject[key])
-				if (jsonObject[key] instanceof Array) {
-					console.log("is an array")
-				} else if (typeof jsonObject[key] === 'string' || jsonObject]key instanceof String) {
-					console.log("I am string")
-					mapping[jsonPath + "/" + key] = jsonObject[key]
-				} else if (jsonObject[key] instanceof Object) {
-					console.log("have to move down")
-					// paths.concat(getFieldsHelper(jsonObject.key, jsonPath + "/" + key))
+				const value = jsonObject[key]
+				if (value instanceof Array) {
+					// console.log("I am array")
+					// for (var item in value) {
+					// 	mapping[item] = jsonPath + "/" + key
+					// }
+				} else if (typeof value === 'string' || value instanceof String) {
+					mapping[value] = (jsonPath + "." + key).substring(1)
+				} else if (value instanceof Object) {
+					getFieldsHelper(value, jsonPath + "." + key, mapping)
 				}
 			}
 		}
